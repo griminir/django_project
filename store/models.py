@@ -43,10 +43,6 @@ class Customer(models.Model):
     birth_date = models.DateField(null=True)
     membership = models.CharField(
         max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
-    
-    class Meta:
-        db_table = 'store_customers'
-        indexes = [models.Index(fields=['last_name', 'first_name'])]
 
 
 class Order(models.Model):
@@ -76,7 +72,6 @@ class OrderItem(models.Model):
 class Address(models.Model):
     street = models.CharField(max_length=255)
     city = models.CharField(max_length=255)
-    zip = models.CharField(max_length=255, default='')
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 
