@@ -11,5 +11,10 @@
         {%else%}
         <h1>Hello from django template!!!!</h1>
         {%endif%}
+        <ul>
+            {% for product in products %}
+            <li>{{product.title}}, price: {{product.unit_price}}</li>
+            {%endfor%}
+        </ul>
     </body>
 </html>
