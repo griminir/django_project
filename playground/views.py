@@ -23,7 +23,7 @@ def queries(request):
         # queryset = Product.objects.all()[:3] 0,1,2
         # queryset = Product.objects.all()[3:6] 3,4,5
     
-    # selecting fields
+    # selecting fields value gives us a dictionary
         # collection__title lets us grab the title of the collection with an inner join
         # queryset = Product.objects.values('title', 'unit_price', 'collection__title')
         # queryset = Product.objects.values_list('title', 'unit_price')
@@ -31,6 +31,12 @@ def queries(request):
     # what a more complex query looks like
         # this gets the products that have been ordered
         # queryset = Product.objects.filter(id__in=OrderItem.objects.values('product_id').distinct()).order_by('title')
+
+    # defering fields gives us instance of the product class 
+    # the only method can be end up sending multiple queries to the database if you ask for something that is not in the cache
+        #queryset = Product.objects.only('id', 'title')
+    # the defer method is the opposite of only it defers the fields that you don't want to see
+        # queryset = Product.objects.defer('description')
     
 
     return render(request, 'hello.html', {'name': 'timmy', 'products': list(queryset)})
