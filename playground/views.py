@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q, F
-from store.models import Product, OrderItem
+from store.models import Product, OrderItem, Order
 # Create your views here.
 
 # remember you can chain queries together or you can save it to a variable then query it again
@@ -44,5 +44,9 @@ def queries(request):
     # prefetch_related is used when (n) many promotions (many to many)
         # queryset = Product.objects.prefetch_related('promotions').all()
     # since both return a queryset you can chain them together
-    queryset = Product.objects.select_related('collection').prefetch_related('promotions').all()
+        # queryset = Product.objects.select_related('collection').prefetch_related('promotions').all()
+
+    # more complex example return the 5 last orders with their customer
+        # queryset = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at')[:5]
+        # return render(request, 'hello.html', {'name': 'timmy', 'orders': list(queryset)})
     return render(request, 'hello.html', {'name': 'timmy', 'products': list(queryset)})
