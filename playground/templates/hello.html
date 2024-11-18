@@ -13,7 +13,7 @@
         {%endif%}
         <ul>
             {% for product in products %}
-            <li>{{product.title}} {{product.description}}</li>
+            <li>{{product.title}} - {{product.collection.title}}</li>
             {%endfor%}
         </ul>
     </body>

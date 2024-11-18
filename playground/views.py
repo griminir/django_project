@@ -38,5 +38,11 @@ def queries(request):
     # the defer method is the opposite of only it defers the fields that you don't want to see
         # queryset = Product.objects.defer('description')
     
-
+    # selecting releated objects
+    # selected_related is used when (1) one collection (foreign key)
+        # queryset = Product.objects.select_related('collection').all()
+    # prefetch_related is used when (n) many promotions (many to many)
+        # queryset = Product.objects.prefetch_related('promotions').all()
+    # since both return a queryset you can chain them together
+    queryset = Product.objects.select_related('collection').prefetch_related('promotions').all()
     return render(request, 'hello.html', {'name': 'timmy', 'products': list(queryset)})
