@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.models import Q, F
-from store.models import Product, OrderItem, Order
+from django.db.models import Q, F, Value, Func
+from django.db.models.aggregates import Count, Sum, Avg, Min, Max
+from django.db.models.functions import Concat
+from store.models import Product, OrderItem, Order, Customer
 # Create your views here.
 
 # remember you can chain queries together or you can save it to a variable then query it again
@@ -49,4 +51,22 @@ def queries(request):
     # more complex example return the 5 last orders with their customer
         # queryset = Order.objects.select_related('customer').prefetch_related('orderitem_set__product').order_by('-placed_at')[:5]
         # return render(request, 'hello.html', {'name': 'timmy', 'orders': list(queryset)})
+
+    # aggregating data
+        # result = Product.objects.aggregate(count=Count('id'), min_price=Min('unit_price'), max_price=Max('unit_price'), avg_price=Avg('unit_price'), total_price=Sum('unit_price'))
+        # return render(request, 'hello.html', {'name': 'timmy', 'result': result})
+
+    # annotating can add new fields to the queryset
+        # queryset = Product.objects.annotate(new_id=F('id') + 100)
+
+    # using database functions
+        # queryset = Customer.objects.annotate(full_name=Func(F('first_name'), Value(' '), F('last_name'), function='CONCAT'))
+    # shortcut using Concat
+        # queryset = Customer.objects.annotate(full_name=Concat('first_name', Value(' '), 'last_name'))
+
+    # grouping data
+        # little quirk here is that you cant count order_set you have to count order
+        # queryset = Customer.objects.annotate(orders_count=Count('order'))
+
+    
     return render(request, 'hello.html', {'name': 'timmy', 'products': list(queryset)})

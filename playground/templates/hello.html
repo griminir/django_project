@@ -11,13 +11,14 @@
         {%else%}
         <h1>Hello from django template!!!!</h1>
         {%endif%}
+        {% comment %} {{ result }} {% endcomment %}
         <ul>
             {% comment %} {% for product in products %}
             <li>{{product.title}} - {{product.collection.title}}</li>
             {%endfor%} {% endcomment %}
-            {% for order in orders %}
+            {% comment %} {% for order in orders %}
             <li>{{order.id}} - {{order.customer.first_name}}</li>
-            {%endfor%}
+            {%endfor%} {% endcomment %}
         </ul>
     </body>
 </html>
