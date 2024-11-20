@@ -84,5 +84,8 @@ def queries(request):
     #         content_type=content_type,
     #         object_id=1
     #     )
+    # using the custom manager code would look like this
+    # queryset = TaggedItem.objects.get_tags_for(Product, 1)
     # return render(request, 'hello.html', {'name': 'timmy', 'tags': list(queryset)})
+
     return render(request, 'hello.html', {'name': 'timmy', 'products': list(queryset)})
