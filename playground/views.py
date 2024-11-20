@@ -4,6 +4,7 @@ from django.db.models import Q, F, Value, Func, ExpressionWrapper, DecimalField
 from django.db.models.aggregates import Count, Sum, Avg, Min, Max
 from django.db.models.functions import Concat
 from django.contrib.contenttypes.models import ContentType
+from django.db import connection
 from store.models import Product, OrderItem, Order, Customer
 from tags.models import TaggedItem
 # Create your views here.
@@ -87,5 +88,14 @@ def queries(request):
     # using the custom manager code would look like this
     # queryset = TaggedItem.objects.get_tags_for(Product, 1)
     # return render(request, 'hello.html', {'name': 'timmy', 'tags': list(queryset)})
+
+    # raw sql queries
+    # queryset = Product.objects.raw('SELECT * FROM store_product WHERE id = %s', [1])
+    # plain sql not using model
+    # with helps us close the connection automatically when we are done
+    # with connection.cursor() as cursor:
+    # cursor.execute('SELECT * FROM store_product WHERE id = %s', [1])
+    # store procedures
+    # cursor.callproc('my_procedure', [1, 2])
 
     return render(request, 'hello.html', {'name': 'timmy', 'products': list(queryset)})
