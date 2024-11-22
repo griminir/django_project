@@ -21,6 +21,7 @@ class InventoryFilter(admin.SimpleListFilter):
 
 @admin.register(models.Product)
 class ProductAdmin(admin.ModelAdmin):
+    search_fields = ['title']
     autocomplete_fields = ['collection']
     prepopulated_fields = {'slug': ['title']}
     actions = ['clear_inventory']
@@ -64,13 +65,18 @@ class CustomerAdmin(admin.ModelAdmin):
         return super().get_queryset(request).annotate(orders=Count('order'))
 
 
+class OrderItemInline(admin.TabularInline):
+    autocomplete_fields = ['product']
+    model = models.OrderItem
+    min_num = 1
+    extra = 0
+
 @admin.register(models.Order)
 class OrderAdmin(admin.ModelAdmin):
     autocomplete_fields = ['customer']
+    inlines = [OrderItemInline]
     list_display = ['id', 'placed_at', 'customer']
 
-# Register your models here.
-# long way of doing it, add class and then pass it as a second argument
 
 
 @admin.register(models.Collection)
